@@ -9,7 +9,10 @@ if __name__=="__main__":
     if path:
         directories = path.split(os.pathsep)
         for directory in directories:
-            print(os.listdir(directory))
+            try:
+                print(os.listdir(directory))
+            except FileNotFoundError:
+                print(f'Problem with directory {directory}, exception caught',file=sys.stderr)
 
 
 
