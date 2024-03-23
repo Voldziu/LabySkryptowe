@@ -1,6 +1,11 @@
 import time,sys,os,argparse
 
+"""
+command line for that: 
+cat plik.txt | python Lista3_3.py
 
+python Lista3_3.py plik.txt --lines=10 --follow
+"""
 
 def tail_printer_input(input,num_lines):
     lines = input.readlines()
@@ -15,7 +20,7 @@ def tail_printer(filename, num_lines):
     if not os.path.exists(filename):
         print("Plik nie istnieje")
         return
-    with open(filename,'r') as file:
+    with open(filename,'r',encoding='utf-8') as file:
         tail_printer_input(file,num_lines)
 
 

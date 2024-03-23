@@ -28,3 +28,5 @@ ddd
 dddddd
 
 ddad
+
+type TextFiles/Text1.txt | java -cp "C:\Users\Mikolaj\Downloads\jar_files\json-20240303.jar" JavaReader/src/Main.java
