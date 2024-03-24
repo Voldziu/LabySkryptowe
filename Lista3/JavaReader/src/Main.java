@@ -5,6 +5,40 @@ import java.util.HashMap;
 import java.util.Map;
 import org.json.JSONObject;
 
+
+
+public class Main {
+    public static void main(String[] args) {
+        String filepath;
+
+//        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
+//
+//            filepath = br.readLine();
+//            System.out.println(filepath);
+//        } catch (IOException e) {
+//            System.err.println("Error reading input: " + e.getMessage());
+//            return;
+//        }
+
+        StringBuilder contentBuilder = new StringBuilder();
+        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(System.in))) {
+            String line;
+            while ((line = fileReader.readLine()) != null) {
+                contentBuilder.append(line).append("\n");
+            }
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
+            return;
+        }
+
+        String content = contentBuilder.toString();
+        Statistics stats = new Statistics();
+        stats.analyzeFile(content);
+        JSONObject jsonStats = stats.toJson();
+        System.out.println(jsonStats.toString());
+    }
+}
+
 class Statistics {
     String filepath;
     int totalCharacters;
@@ -61,36 +95,4 @@ class Statistics {
         json.put("mostCommonWord", mostCommonWord);
         return json;
     }
-}
-
-public class Main {
-    public static void main(String[] args) {
-        String filepath;
-
-//        try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-//
-//            filepath = br.readLine();
-//            System.out.println(filepath);
-//        } catch (IOException e) {
-//            System.err.println("Error reading input: " + e.getMessage());
-//            return;
-//        }
-
-        StringBuilder contentBuilder = new StringBuilder();
-        try (BufferedReader fileReader = new BufferedReader(new InputStreamReader(System.in))) {
-            String line;
-            while ((line = fileReader.readLine()) != null) {
-                contentBuilder.append(line).append("\n");
-            }
-        } catch (IOException e) {
-            System.err.println("Error reading file: " + e.getMessage());
-            return;
-        }
-
-        String content = contentBuilder.toString();
-        Statistics stats = new Statistics();
-        stats.analyzeFile(content);
-        JSONObject jsonStats = stats.toJson();
-        System.out.println(jsonStats.toString());
-    }
-}
+};

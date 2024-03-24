@@ -3,7 +3,8 @@ import subprocess
 import json
 import argparse
 
-PATH_TO_JAR_FILE ="C:\\Users\\Mikolaj\\Downloads\\jar_files\\json-20240303.jar"  # SYSTEM DEPENDENT
+# PATH_TO_JAR_FILE ="C:\\Users\\Mikolaj\\Downloads\\jar_files\\json-20240303.jar"  # SYSTEM DEPENDENT
+PATH_TO_JAR_FILE = "/Users/mikolajmachalski/Downloads/json-20240303.jar"
 def process_files(directory):
     current_directory = os.getcwd()
     print(current_directory)
@@ -23,7 +24,7 @@ def process_files(directory):
             Must be in "Lista3" directory to launch that
             
             """
-            command1 = f'type {textfile_path}'
+            command1 = f'cat {textfile_path}'
             command2 = f'java -cp {PATH_TO_JAR_FILE} JavaReader/src/Main.java'
 
             process1 = subprocess.Popen(command1, stdout=subprocess.PIPE, shell=True)
