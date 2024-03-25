@@ -29,8 +29,8 @@ def restore_backup(backup_dir, backups):
         sys.exit(1)
 
     backup = backups[chosen_backup - 1]
-    archive_path = os.path.join(backup_dir, backup['backup_filename'])
-    target_dir = backup['source_directory']
+    archive_path = os.path.join(backup_dir, backup['backup_filename'])  # creating a path for the archive
+    target_dir = backup['source_directory']  # getting the source directory of archived files
 
     if not os.path.exists(archive_path):
         print("Backup archive not found")
@@ -39,6 +39,7 @@ def restore_backup(backup_dir, backups):
     print(f"Target dir {target_dir}")
     print(f"Archive path {archive_path}")
 
+    # deleting all files from the source files
     for filename in os.listdir(target_dir):
         file_path = os.path.join(target_dir, filename)
         try:

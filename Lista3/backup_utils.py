@@ -1,8 +1,6 @@
-# backup_utils.py
 import os
 import json
 import subprocess
-import shutil
 from datetime import datetime
 
 
@@ -18,8 +16,9 @@ def get_backup_filename(source_dir, extension='zip'):
 
 
 def backup_directory(source_dir, backup_dir, extension='zip'):
-    backup_filename = get_backup_filename(source_dir, extension)
+    backup_filename = get_backup_filename(source_dir, extension)    # creates a backup folder name
     backup_path = os.path.join(backup_dir, backup_filename)
+    create_backup_folder(backup_dir)
 
     if extension == 'zip':
         command = ['7z', 'a', '-tzip', backup_path, source_dir]
@@ -30,13 +29,7 @@ def backup_directory(source_dir, backup_dir, extension='zip'):
 
     subprocess.run(command, check=True, cwd=source_dir)
 
-    return backup_path, backup_filename
-
-
-def move_backup_to_destination(backup_path, destination_dir):
-    create_backup_folder(destination_dir)
-    final_path = shutil.move(backup_path, destination_dir)
-    return final_path
+    return backup_filename
 
 
 def update_backup_history(backup_dir, backup_filename, source_dir):
