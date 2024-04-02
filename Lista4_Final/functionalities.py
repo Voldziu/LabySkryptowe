@@ -7,7 +7,7 @@ import logging
 import sys
 
 Log = namedtuple('LogEntry', ['date', 'id', 'content'])
-Stats = namedtuple('Stats',['mean', 'std'])
+Stats = namedtuple('Stats', ['mean', 'std'])
 
 
 def create_logger():

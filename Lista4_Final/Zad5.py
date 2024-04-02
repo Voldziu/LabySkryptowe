@@ -21,7 +21,7 @@ def parse_arguments():
     func4a = subparsers.add_parser("Func4a", help="do Functionality 4a")
     func4a.add_argument("--n",default=3,type=int,help='podaj n')
     func4bparser = subparsers.add_parser("Func4b", help="do Functionality 4b")
-    func4bparser.add_argument("--Global", action="store_true", help='True for all log, Flase for group by users')
+    func4bparser.add_argument("--Global", action="store_true", help='True for all log, False for group by users')
     subparsers.add_parser("Func4c", help="do Functionality 4c")
 
     set_level_parser = subparsers.add_parser("set-level", help="Set minimum logging level")
