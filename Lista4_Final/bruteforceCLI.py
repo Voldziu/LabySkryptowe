@@ -6,9 +6,12 @@ app = typer.Typer()
 
 
 @app.command()
-def run_detection(logfile: str = typer.Argument(), consecutive_threshold: int = 10, max_interval_seconds: int = 5, target_single_user: bool = True):
-    log_list = create_log_list(logfile, None)
-    attacks = detect_bruteforce(log_list)
+def run_detection(logfile: str, consecutive_threshold: int = 10, max_interval_seconds: int = 5, target_single_user: bool = True):
+
+    attacks = detect_bruteforce(logfile,
+                                consecutive_attempts_threshold=consecutive_threshold,
+                                interval_seconds=max_interval_seconds,
+                                target_single_user=target_single_user)
 
     if attacks:
         for attack in attacks:
