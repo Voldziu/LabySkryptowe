@@ -33,7 +33,7 @@ def split_logs(log):
         log)
 
     if match:
-        return Log(datetime.strptime(match.group(1), "%b %d %H:%M:%S"), int(match.group(4)), match.group(5))
+        return Log(datetime.strptime(match.group(1), "%b %d %H:%M:%S").replace(year=2137), int(match.group(4)), match.group(5))
     else:
         return None
 

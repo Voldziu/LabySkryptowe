@@ -15,8 +15,8 @@ def run_detection(logfile: str, consecutive_threshold: int = 10, max_interval_se
 
     if attacks:
         for attack in attacks:
-            timestamp, ip, attempts = attack
-            typer.echo(f"Attack detected: {timestamp} from {ip}, attempts: {attempts}")
+            start, end , ip, attempts = attack
+            typer.echo(f"Attack detected:\nStart of the attack: {start}\nEnd of the attack: {end}\nFrom {ip[0]}\nUsed usernames: {ip[1]}\nAttempts: {attempts}\nDuration: {end-start}\n")
     else:
         typer.echo("No brute-force attacks detected.")
 
