@@ -62,8 +62,8 @@ def create_log_list(path, logger, log_entries=False):
     return log_list
 
 
-def get_ipv4s_from_log(log_entry):
-    matches = re.findall(r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b', log_entry.content)
+def get_ipv4s_from_log(log_entry_content):
+    matches = re.findall(r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b', log_entry_content)
     return matches
 
 
