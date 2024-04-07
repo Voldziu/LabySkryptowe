@@ -10,7 +10,7 @@ def zad2a(path):
 
 
 def zad2b(path):
-    for line in read_logs(path, logger, False):
+    for line in read_logs(path, logger, True):
         print(get_ipv4s_from_log(line))
 
 
@@ -24,7 +24,3 @@ def zad2d(path):
         print(get_message_type(line.content))
 
 
-zad2b('../SSH.log')
-# logger.debug("Debug")
-# logger.info("Info")
-# logger.critical("Critical")

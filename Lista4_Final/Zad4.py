@@ -37,5 +37,3 @@ def zad4c(file_dir):
             "Least Frequent: ": (least_frequent_user, len(user_entry_map[least_frequent_user]))}
 
 
-if __name__ == "__main__":
-    print(zad4c(r'../SSH.log'))
