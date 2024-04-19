@@ -25,3 +25,31 @@ def get_ipv4s_from_log(content):
     return matches
 
 
+def get_user_from_log(log_entry):
+    content = log_entry.event
+    black_list_words = ['request', 'support', 'invalid']
+    exclude_pattern = '|'.join(black_list_words)
+
+    user_space_pattern = r'user\s{1}((?!' + exclude_pattern + r')\w+)'
+    user_equals_pattern = r'user=([^\s]+)'
+    patterns = [user_equals_pattern, user_space_pattern]
+
+    for pattern in patterns:
+        match = re.search(pattern, content)
+        if match:
+            return match.group(1)
+    return None
+
+
+def group_by_user(list_of_log_entries):
+    user_entries_map = {}
+    for log_entry in list_of_log_entries:
+        user = get_user_from_log(log_entry)
+        if user:
+            if user in user_entries_map:
+                user_entries_map[user].append(log_entry)
+            else:
+                user_entries_map[user] = [log_entry]
+    return user_entries_map
+
+

@@ -1,9 +1,9 @@
-from Lab6_v2.functionalities import get_ipv4s_from_log
+from functionalities import get_ipv4s_from_log
 from Zad2 import Other, PasswordFail, PasswordAccepted, Error
-from Lab6_v2.functionalities import get_logs
+from functionalities import get_logs
 from ipaddress import IPv4Address
 from datetime import datetime
-from Lab6_v2.regexes import analysis_regexes
+from regexes import analysis_regexes
 import re
 
 
@@ -78,15 +78,20 @@ class SSHLogJournal:
             return Other
 
 
-if __name__ == '__main__':
+def create_sample_journal(amount):
     # creating a sample journal
     log_journal = SSHLogJournal()
     i = 0
-    for log in get_logs('../SSH.log'):
+    for log in get_logs('SSH.log'):
         log_journal.add_entry(log)
         i += 1
-        if i == 20:
+        if i == amount:
             break
+    return log_journal
+
+
+if __name__ == '__main__':
+    log_journal = create_sample_journal(20)
 
     ip_address = IPv4Address('173.234.31.186')
     logs_with_given_ip = log_journal[ip_address]

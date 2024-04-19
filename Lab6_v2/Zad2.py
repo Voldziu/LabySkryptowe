@@ -1,7 +1,7 @@
 from Zad1 import SSHLogEntry
-from Lab6_v2.regexes import analysis_regexes
+from regexes import analysis_regexes
 import re
-from Lab6_v2.functionalities import get_logs
+from functionalities import get_logs
 
 
 class PasswordFail(SSHLogEntry):
@@ -52,7 +52,7 @@ class Other(SSHLogEntry):
 
 
 if __name__ == '__main__':
-    generator = get_logs('../SSH.log')
+    generator = get_logs('SSH.log')
     entrySSH = Other(next(generator))
     print(entrySSH.validate())
 

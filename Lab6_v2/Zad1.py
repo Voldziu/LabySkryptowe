@@ -1,4 +1,4 @@
-from Lab6_v2.functionalities import parse_log, get_ipv4s_from_log
+from functionalities import parse_log, get_ipv4s_from_log
 import ipaddress
 from abc import ABC, abstractmethod
 
