@@ -1,9 +1,11 @@
 def make_generator(f):
+    i=1
     def inner_generator():
-        i=1
+        nonlocal i
         while True:
-            yield f(i)
-            i+=1
+            i += 1
+            yield f(i-1)
+
     return inner_generator
 
 def fibonacci(n):
@@ -22,12 +24,12 @@ def catalan(n):
 
 if __name__ =="__main__":
     catalan_gen = make_generator(catalan)()
-    fibonacci_gen = make_generator(fibonacci)()
+    fibonacci_gen = make_generator(fibonacci)
 
     geometric_gen = make_generator(lambda n: 2*(3**(n-3)))()
 
     for i in range(100):
-        print(f'Fibonacci number: {i}, {next(fibonacci_gen)}')
+        print(f'Fibonacci number: {i}, {next(fibonacci_gen())}')
 
 
 

@@ -38,12 +38,6 @@ def log_class(cls,level):
                                   {})
             self.__dict__ = self._instance.__dict__
 
-        # def __getattr__(self, name):
-        #     return self._instance.getattr(self._instance, name)
-        #
-        # def __setattr__(self, name, value):
-        #     self._instance.setattr(self._instance, name, value)
-
     return Wrapper
 
 
@@ -54,13 +48,12 @@ if __name__ == "__main__":
         return x+y
     @log(level=logging.DEBUG)
     class Klasa:
-        def __init__(self,x):
+        def __init__(self,x,**kwargs):
             self.x=x**2
-
-
+            self.kwargs = kwargs
     result = add(3, 5)
     print("Result of example_function:", result)
 
     # Test the decorated class
-    example_instance = Klasa(10)
+    example_instance = Klasa(10, jakub=10)
     print("Value of x in example_instance:", example_instance.x)

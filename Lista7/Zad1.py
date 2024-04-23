@@ -5,7 +5,7 @@ def median(numbers:list[int]):
     sorted_numbers = sorted(numbers)
     n = len(sorted_numbers)
     middle = n //2
-    return (sorted_numbers[middle] + sorted_numbers[~middle]) / 2
+    return (sorted_numbers[middle] + sorted_numbers[-middle]) / 2
 
 
 def sqrt(x,epsilon=1e-10):
