@@ -1,12 +1,11 @@
 import re
 from datetime import datetime
-from regexes import analysis_regexes
+from regexes import analysis_regexes, parse_log_regex, ipv4_regex
 
 
 def parse_log(entry):
     match = re.search(
-        r'(?P<timestamp>\w{3} \d{1,2} \d{2}:\d{2}:\d{2}) (?P<hostname>\S+) (?P<application>\w+)\[(?P<pid>\d+)]: (?P<event>.+)',
-        entry)
+        parse_log_regex, entry)
     if match:
         return datetime.strptime(match.group('timestamp'), "%b %d %H:%M:%S"), match.group('hostname'), int(
             match.group('pid')), match.group('event')
@@ -21,7 +20,7 @@ def get_logs(path):
 
 
 def get_ipv4s_from_log(content):
-    matches = re.findall(r'\b(?:[0-9]{1,3}\.){3}[0-9]{1,3}\b', content)
+    matches = re.findall(ipv4_regex, content)
     return matches
 
 
@@ -30,8 +29,8 @@ def get_user_from_log(log_entry):
     black_list_words = ['request', 'support', 'invalid']
     exclude_pattern = '|'.join(black_list_words)
 
-    user_space_pattern = r'user\s{1}((?!' + exclude_pattern + r')\w+)'
-    user_equals_pattern = r'user=([^\s]+)'
+    user_space_pattern = re.compile(r'user\s{1}((?!' + exclude_pattern + r')\w+)')
+    user_equals_pattern = re.compile(r'user=([^\s]+)')
     patterns = [user_equals_pattern, user_space_pattern]
 
     for pattern in patterns:
