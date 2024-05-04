@@ -55,7 +55,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         index = self.getSelectedIndex()
         selection_model = self.logTableView.selectionModel()
 
-        if index.row()< self.logTableView.model().rowCount():
+        if index.row()< self.logTableView.model().rowCount()-1:
 
             next_index = index.sibling(index.row()+1,index.column())
             selection_model.clearSelection()
