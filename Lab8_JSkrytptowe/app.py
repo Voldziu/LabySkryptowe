@@ -31,31 +31,16 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.filterButton.clicked.connect(self.filter)
 
     def filter(self):
-        lower_date = self.fromDateEdit.text()
-        if lower_date == "":
-            date_lower = datetime.datetime.min.date()
+        lower = self.fromDateEdit.date()
+        date_lower = datetime.date(lower.year(), lower.month(), lower.day())
 
-        else:
-            try:
-                date_lower = datetime.datetime.strptime(lower_date, date_filter_format).date()
-
-            except:
-                raise TypeError("Wrong date encoding")
-
-        upper_date = self.toDateEdit.text()
-        if upper_date == "":
-            date_upper = datetime.datetime.max.date()
-        else:
-            try:
-                date_upper = datetime.datetime.strptime(upper_date, date_filter_format).date()
-
-            except:
-                raise TypeError("Wrong date encoding")
+        upper = self.toDateEdit.date()
+        date_upper = datetime.date(upper.year(), upper.month(), upper.day())
 
         print(date_lower)
         print(date_upper)
         if date_lower >= date_upper:
-            raise Exception("To date greater than from date")
+            raise Exception("Make dates reversed!")
 
         def pred(date):
             return date_lower <= date <= date_upper

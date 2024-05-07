@@ -15,9 +15,9 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QHeaderView, QLabel, QLineEdit,
-    QMainWindow, QPushButton, QScrollArea, QSizePolicy,
-    QStatusBar, QTableView, QWidget)
+from PySide6.QtWidgets import (QApplication, QDateEdit, QHeaderView, QLabel,
+    QLineEdit, QMainWindow, QPushButton, QScrollArea,
+    QSizePolicy, QStatusBar, QTableView, QWidget)
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
@@ -50,12 +50,6 @@ class Ui_MainWindow(object):
         self.logPathEdit = QLineEdit(self.centralwidget)
         self.logPathEdit.setObjectName(u"logPathEdit")
         self.logPathEdit.setGeometry(QRect(150, 90, 611, 41))
-        self.fromDateEdit = QLineEdit(self.centralwidget)
-        self.fromDateEdit.setObjectName(u"fromDateEdit")
-        self.fromDateEdit.setGeometry(QRect(120, 200, 113, 25))
-        self.toDateEdit = QLineEdit(self.centralwidget)
-        self.toDateEdit.setObjectName(u"toDateEdit")
-        self.toDateEdit.setGeometry(QRect(310, 200, 113, 25))
         self.fromLabel = QLabel(self.centralwidget)
         self.fromLabel.setObjectName(u"fromLabel")
         self.fromLabel.setGeometry(QRect(60, 200, 41, 19))
@@ -236,6 +230,14 @@ class Ui_MainWindow(object):
 "    font-weight: bold;  \n"
 "    text-align: center; \n"
 "}")
+        self.fromDateEdit = QDateEdit(self.centralwidget)
+        self.fromDateEdit.setObjectName(u"fromDateEdit")
+        self.fromDateEdit.setGeometry(QRect(110, 200, 121, 22))
+        self.fromDateEdit.setDate(QDate(1995, 7, 1))
+        self.toDateEdit = QDateEdit(self.centralwidget)
+        self.toDateEdit.setObjectName(u"toDateEdit")
+        self.toDateEdit.setGeometry(QRect(310, 200, 131, 22))
+        self.toDateEdit.setDate(QDate(1995, 7, 20))
         MainWindow.setCentralWidget(self.centralwidget)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
