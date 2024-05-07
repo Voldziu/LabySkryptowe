@@ -5,8 +5,7 @@ import datetime
 import functionalities
 from gui import Ui_MainWindow
 import sys
-from functionalities import load_logs
-from constants import date_filter_format, date_format
+from functionalities import load_logs, pred
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -41,9 +40,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         print(date_upper)
         if date_lower >= date_upper:
             raise Exception("Make dates reversed!")
-
-        def pred(date):
-            return date_lower <= date <= date_upper
 
         new_model = QStandardItemModel(self)
         self.model = new_model

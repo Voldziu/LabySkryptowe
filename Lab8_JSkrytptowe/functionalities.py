@@ -37,27 +37,6 @@ def read_one_line(line):
 
     return log_data
 
-# def ensureVisible(index,table_view):
-#     getVisibleIndices(table_view)
-#     if not table_view.visualRect(index).isEmpty():
-#         return
-#     viewport_rect = table_view.viewport().rect()
-#
-#     if index.row() < table_view.verticalScrollBar().value():
-#         table_view.scrollTo(index, QTableView.PositionAtTop)
-#     elif index.row() >= table_view.verticalScrollBar().value() + viewport_rect.height() / table_view.rowHeight(0):
-#         table_view.scrollTo(index, QTableView.PositionAtBottom)
-#
-#
-#
-# def getVisibleIndices(table_view):
-#     print(table_view)
-#     table_view.viewport().update()
-#     top_left_index = table_view.indexAt(table_view.rect().topLeft())
-#     bottom_right_index = table_view.indexAt(table_view.rect().bottomRight())
-#     if top_left_index.isValid() and bottom_right_index.isValid():
-#         start_row = top_left_index.row()
-#         end_row = bottom_right_index.row()
-#         print("Visible Index Range:", start_row, "-", end_row)
-#     else:
-#         print("No visible indices.")
+
+def pred(date_lower, date, date_upper):
+    return date_lower <= date <= date_upper
