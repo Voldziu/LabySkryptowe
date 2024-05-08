@@ -41,7 +41,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         if date_lower >= date_upper:
             raise Exception("Make dates reversed!")
 
-        new_model = QStandardItemModel(self)
+        new_model = QStandardItemModel()
         self.model = new_model
         load_logs(self.path, self.model, pred, date_lower, date_upper)
         self.proxy_model.setSourceModel(self.model)
