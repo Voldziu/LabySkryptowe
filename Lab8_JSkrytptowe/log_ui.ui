@@ -233,7 +233,7 @@ QPushButton:hover {
      </rect>
     </property>
     <property name="readOnly">
-     <bool>false</bool>
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="dateLabel">
@@ -267,6 +267,9 @@ QPushButton:hover {
       <height>31</height>
      </rect>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLabel" name="timeLabel">
     <property name="geometry">
@@ -299,6 +302,9 @@ QPushButton:hover {
       <height>31</height>
      </rect>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLineEdit" name="statusCodeEdit">
     <property name="geometry">
@@ -309,6 +315,9 @@ QPushButton:hover {
       <height>31</height>
      </rect>
     </property>
+    <property name="readOnly">
+     <bool>true</bool>
+    </property>
    </widget>
    <widget class="QLineEdit" name="resourceEdit">
     <property name="geometry">
@@ -318,6 +327,9 @@ QPushButton:hover {
       <width>171</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="resourceLabel">
@@ -350,6 +362,9 @@ QPushButton:hover {
       <width>171</width>
       <height>31</height>
      </rect>
+    </property>
+    <property name="readOnly">
+     <bool>true</bool>
     </property>
    </widget>
    <widget class="QLabel" name="sizeLabel">
