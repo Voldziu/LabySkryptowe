@@ -2,10 +2,10 @@ from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableView
 from PySide6.QtGui import QStandardItemModel, QStandardItem
 from PySide6.QtCore import QSortFilterProxyModel, Qt, QItemSelectionModel
 import datetime
-import functionalities
 from gui import Ui_MainWindow
 import sys
-from functionalities import load_logs, pred
+from functionalities import load_logs, pred, read_one_line
+from constants import time_format, date_edit_format
 
 
 class MainWindow(QMainWindow, Ui_MainWindow):
@@ -43,7 +43,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         new_model = QStandardItemModel(self)
         self.model = new_model
-        functionalities.load_logs(self.path, self.model, pred)
+        load_logs(self.path, self.model, pred, date_lower, date_upper)
         self.proxy_model.setSourceModel(self.model)
         self.init_item()
 
@@ -99,12 +99,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.handle_item_click(first_item)
 
     def analyze_item(self, data):
-        domain, datetime, path, code, bytes = functionalities.read_one_line(data)
+        domain, datetime, path, code, bytes = read_one_line(data)
         date = datetime.date()
         time = datetime.time()
         self.hostAddressEdit.setText(domain)
-        self.dateEdit.setText(date.strftime('%Y-%m-%d'))
-        self.timeEdit.setText(time.strftime('%H:%M:%S'))
+        self.dateEdit.setText(date.strftime(date_edit_format))
+        self.timeEdit.setText(time.strftime(time_format))
         self.statusCodeEdit.setText(str(code))
         self.sizeEdit.setText(str(bytes))
         self.resourceEdit.setText(path)

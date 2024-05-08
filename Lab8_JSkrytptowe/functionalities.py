@@ -1,12 +1,11 @@
-from PyQt5.QtWidgets import QTableView
-from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtGui import QStandardItem
 from regexes import log_date_regex
 from datetime import datetime
-from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex
-from constants import date_format, date_filter_format
+from PySide6.QtCore import Qt
+from constants import date_format, loading_date_format
 
 
-def load_logs(path, model, pred=lambda item: True):
+def load_logs(path, model, pred_fun=lambda item1, item2, item3: True, date_lower=None, date_upper=None):
     model.clear()
     with open(path, 'r', encoding='utf-8') as file:
         for line in file:
@@ -14,8 +13,8 @@ def load_logs(path, model, pred=lambda item: True):
             date_match = log_date_regex.search(line)
             if date_match:
                 date_str = date_match.group(1)
-                date_obj = datetime.strptime(date_str, '%d/%b/%Y').date()
-                if pred(date_obj):
+                date_obj = datetime.strptime(date_str, loading_date_format).date()
+                if pred_fun(date_lower, date_obj, date_upper):
                     item.setData(date_obj, Qt.UserRole + 1)
                     model.appendRow(item)
 
