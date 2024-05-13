@@ -6,7 +6,7 @@ from ipaddress import IPv4Address
 import ipaddress
 from datetime import datetime
 from regexes import analysis_regexes
-from typing import List, Optional, Dict, Union
+from typing import List, Optional, Dict, Union, Iterator
 import re
 
 
@@ -36,7 +36,7 @@ class SSHLogJournal:
     def __contains__(self, item: SSHLogEntry) -> bool:
         return item in self.log_journal
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[SSHLogEntry]:
         return iter(self.log_journal)
 
     def __getitem__(self, key: Union[int, ipaddress.IPv4Address, datetime]) -> Optional[Union[SSHLogEntry, List[SSHLogEntry]]]:
