@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QTableView, QHeaderView, QMessageBox
-from PySide6.QtGui import QStandardItemModel, QStandardItem
+from PySide6.QtWidgets import QApplication, QMainWindow, QTableView, QHeaderView, QMessageBox, QVBoxLayout, QWidget
+from PySide6.QtGui import QStandardItemModel
 from PySide6.QtCore import QSortFilterProxyModel, Qt, QItemSelectionModel
 import datetime
 from gui import Ui_MainWindow
@@ -11,6 +11,7 @@ from constants import time_format, date_edit_format
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
+        self.setWindowTitle("Log Explorer")
         self.setupUi(self)
         self.model = QStandardItemModel(self)
         self.proxy_model = QSortFilterProxyModel(self)
