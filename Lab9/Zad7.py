@@ -1,7 +1,7 @@
-from functionalities import get_ipv4s_from_log
+from ssh_entry_functionalities import get_ipv4s_from_log
 from Zad2 import Other, PasswordFail, PasswordAccepted, Error
-from Zad1 import SSHLogEntry
-from functionalities import get_logs
+from ssh_entry_functionalities import SSHLogEntry
+from ssh_entry_functionalities import get_logs
 from ipaddress import IPv4Address
 import ipaddress
 from datetime import datetime
@@ -14,17 +14,18 @@ class SSHLogJournal:
     def __init__(self):
         self.log_journal: List[SSHLogEntry] = []
         self.ip_dict: Dict[str, List[SSHLogEntry]] = {}
-        self.date_dict: Dict[str, List[SSHLogEntry]] = {}
+        self.date_dict: Dict[datetime, List[SSHLogEntry]] = {}
 
     def add_entry(self, entry: str):
         log_type: type = self.determine_log_type(entry)
         entry_object: SSHLogEntry = log_type(entry)
+
         if entry_object.validate():
             self.log_journal.append(entry_object)
             self.append_date_dict(entry_object)
             self.append_ip_dict(entry_object)
         else:
-            entry_other: SSHLogEntry = Other(entry)
+            entry_other = Other(entry)
             self.log_journal.append(entry_other)
             self.append_ip_dict(entry_other)
             self.append_date_dict(entry_other)
@@ -44,7 +45,7 @@ class SSHLogJournal:
         elif isinstance(key, ipaddress.IPv4Address):
             return self.ip_dict.get(str(key))
         elif isinstance(key, datetime):
-            return self.date_dict.get(str(key))
+            return self.date_dict.get(key)
         else:
             raise KeyError("Key does not match")
 

@@ -1,7 +1,7 @@
-from Zad1 import SSHLogEntry
+from ssh_entry_functionalities import SSHLogEntry
 from regexes import analysis_regexes
 import re
-from functionalities import get_logs
+from ssh_entry_functionalities import get_logs
 
 
 class PasswordFail(SSHLogEntry):
