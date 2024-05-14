@@ -6,13 +6,13 @@ from ssh_entry_functionalities import get_logs
 
 class PasswordFail(SSHLogEntry):
     def validate(self) -> bool:
-        match = re.match(analysis_regexes['accepted password'], self.event)
+        match = re.search(analysis_regexes['failed password'], self.event)
         return bool(match)
 
 
 class PasswordAccepted(SSHLogEntry):
     def validate(self) -> bool:
-        match = re.match(analysis_regexes['failed password'], self.event)
+        match = re.match(analysis_regexes['accepted password'], self.event)
         return bool(match)
 
 
@@ -30,6 +30,7 @@ class Other(SSHLogEntry):
 if __name__ == '__main__':
     generator = get_logs('SSH.log')
     entrySSH = Other(next(generator))
+    print(entrySSH.time)
     print(entrySSH.validate())
 
     line = next(generator)

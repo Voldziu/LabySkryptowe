@@ -6,7 +6,7 @@ from ipaddress import IPv4Address
 import ipaddress
 from datetime import datetime
 from regexes import analysis_regexes
-from typing import List, Optional, Dict, Union, Iterator
+from typing import List, Optional, Dict, Union, Iterator,Type
 import re
 
 
@@ -18,9 +18,11 @@ class SSHLogJournal:
 
     def add_entry(self, entry: str):
         log_type: type = self.determine_log_type(entry)
+
         entry_object: SSHLogEntry = log_type(entry)
 
         if entry_object.validate():
+
             self.log_journal.append(entry_object)
             self.append_date_dict(entry_object)
             self.append_ip_dict(entry_object)
@@ -53,12 +55,11 @@ class SSHLogJournal:
         return [log for log in self.log_journal if log.has_ip and searched_ip in get_ipv4s_from_log(log.event)]
 
     def append_ip_dict(self, log: SSHLogEntry):
-        ips: List[str] = get_ipv4s_from_log(log.event)
-        for ip in ips:
-            if ip in self.ip_dict:
-                self.ip_dict[ip].append(log)
-            else:
-                self.ip_dict[ip] = [log]
+        ip: Optional[str] = get_ipv4s_from_log(log.event)
+        if ip in self.ip_dict:
+            self.ip_dict[ip].append(log)
+        else:
+            self.ip_dict[ip] = [log]
 
     def append_date_dict(self, log: SSHLogEntry):
         log_date: datetime = log.time
@@ -68,9 +69,10 @@ class SSHLogJournal:
             self.date_dict[log_date] = [log]
 
     @staticmethod
-    def determine_log_type(entry: str) -> type:
+    def determine_log_type(entry: str) -> Type[SSHLogEntry]:
         for log_type, regex in analysis_regexes.items():
-            if re.match(regex, entry):
+            if re.search(regex, entry):
+
                 if log_type == 'accepted password':
                     return PasswordAccepted
                 elif log_type == 'failed password':
@@ -94,8 +96,8 @@ def create_sample_journal(amount):
 
 if __name__ == '__main__':
     log_journal = create_sample_journal(20)
-
+    log_journal.add_entry("Dec 10 06:55:48 LabSZ sshd[24200]: Failed password for invalid user webmaster from 173.234.31.186 port 38926 ssh2")
     ip_address = IPv4Address('173.234.31.186')
     logs_with_given_ip = log_journal[ip_address]
-    for log in logs_with_given_ip:
+    for log in log_journal:
         print(log)

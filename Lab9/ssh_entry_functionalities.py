@@ -1,4 +1,5 @@
 import re
+from re import Match
 from typing import Optional, Tuple, Iterator, List, Dict
 from regexes import analysis_regexes, parse_log_regex, ipv4_regex
 from datetime import datetime
@@ -9,15 +10,21 @@ from abc import ABC, abstractmethod
 
 class SSHLogEntry(ABC):
     def __init__(self, entry: str):
+
         self.time: datetime
         self.hostname: str
         self.pid: int
         self.event: str
-
         entry_parsed = parse_log(entry)
         if entry_parsed is not None:
             self.time, self.hostname, self.pid, self.event = entry_parsed
+        else:
+            self.time = datetime.max
+            self.hostname = "Default"
+            self.pid =-1
+            self.event ="Default"
         self._raw_entry: str = entry
+
 
     def __str__(self) -> str:
         return f"time: {self.time}, hostname: {self.hostname}, pid: {self.pid}, event: {self.event}"
@@ -41,9 +48,9 @@ class SSHLogEntry(ABC):
         return NotImplemented
 
     def get_ip_object(self) -> Optional[ipaddress.IPv4Address]:
-        entry_ip: List[str] = get_ipv4s_from_log(self.event)
+        entry_ip: Optional[Match[str]] = get_ipv4s_from_log(self.event)
         if entry_ip:
-            return ipaddress.IPv4Address(entry_ip[0])
+            return ipaddress.IPv4Address(entry_ip)
         return None
 
     @abstractmethod
@@ -75,9 +82,15 @@ def get_logs(path: str) -> Iterator[str]:
             yield line.strip()
 
 
-def get_ipv4s_from_log(content: str) -> List[str]:
-    matches = re.findall(ipv4_regex, content)
-    return matches
+def get_ipv4s_from_log(content: str) -> Optional[str]:
+    match = re.search(ipv4_regex, content)
+    if match:
+        for i in range(1,5):
+            if int(match.group(i)) >255:
+                return None
+        return str(match.group())
+    else:
+        return None
 
 
 def get_user_from_log(log_entry: SSHLogEntry) -> Optional[str]:
