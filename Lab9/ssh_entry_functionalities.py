@@ -21,10 +21,9 @@ class SSHLogEntry(ABC):
         else:
             self.time = datetime.max
             self.hostname = "Default"
-            self.pid =-1
-            self.event ="Default"
+            self.pid = -1
+            self.event = "Default"
         self._raw_entry: str = entry
-
 
     def __str__(self) -> str:
         return f"time: {self.time}, hostname: {self.hostname}, pid: {self.pid}, event: {self.event}"
@@ -85,8 +84,8 @@ def get_logs(path: str) -> Iterator[str]:
 def get_ipv4s_from_log(content: str) -> Optional[str]:
     match = re.search(ipv4_regex, content)
     if match:
-        for i in range(1,5):
-            if int(match.group(i)) >255:
+        for i in range(1, 5):
+            if int(match.group(i)) > 255:
                 return None
         return str(match.group())
     else:
