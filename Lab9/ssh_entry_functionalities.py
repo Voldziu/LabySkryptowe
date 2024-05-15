@@ -1,11 +1,11 @@
+import ipaddress
 import re
-from re import Match
-from typing import Optional, Tuple, Iterator, List, Dict
-from regexes import analysis_regexes, parse_log_regex, ipv4_regex
+from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List, Optional
-import ipaddress
-from abc import ABC, abstractmethod
+from typing import Tuple, Iterator, Dict
+
+from regexes import parse_log_regex, ipv4_regex
 
 
 class SSHLogEntry(ABC):
