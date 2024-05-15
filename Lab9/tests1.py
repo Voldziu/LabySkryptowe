@@ -21,5 +21,5 @@ def test_invalid_log_entry():
 def test_empty_log_entry():
     entry = ""
     ssh_log_entry = Other(entry)
-    assert ssh_log_entry.time ==datetime.max
+    assert ssh_log_entry.time == datetime.max
 
