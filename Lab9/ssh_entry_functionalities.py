@@ -48,7 +48,7 @@ class SSHLogEntry(ABC):
         return NotImplemented
 
     def get_ip_object(self) -> Optional[ipaddress.IPv4Address]:
-        entry_ip: Optional[Match[str]] = get_ipv4s_from_log(self.event)
+        entry_ip: Optional[str] = get_ipv4s_from_log(self.event)
         if entry_ip:
             return ipaddress.IPv4Address(entry_ip)
         return None

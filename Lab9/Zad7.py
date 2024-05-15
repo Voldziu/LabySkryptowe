@@ -52,10 +52,10 @@ class SSHLogJournal:
             raise KeyError("Key does not match")
 
     def get_logs_with_given_ip(self, searched_ip: ipaddress.IPv4Address) -> List[SSHLogEntry]:
-        return [log for log in self.log_journal if log.has_ip and searched_ip in get_ipv4s_from_log(log.event)]
+        return [log for log in self.log_journal if log.has_ip and searched_ip == get_ipv4s_from_log(log.event)]
 
     def append_ip_dict(self, log: SSHLogEntry):
-        ip: Optional[str] = get_ipv4s_from_log(log.event)
+        ip: str  = str(get_ipv4s_from_log(log.event))
         if ip in self.ip_dict:
             self.ip_dict[ip].append(log)
         else:
