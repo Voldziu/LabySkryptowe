@@ -1,0 +1,52 @@
+import sys
+
+import pandas as pd
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from create_database import Station, Base
+
+
+def check_station_id(station_name, session):
+    station = session.query(Station).filter_by(station_name=station_name).first()
+    if station is None:
+        station = Station(station_name=station_name)
+        session.add(station)
+        session.commit()
+        session.refresh(station)
+    return station.station_id
+
+
+def add_rental(data_path, session):
+    data = pd.read_csv(data_path)
+    rentals_data = []
+    for _, row in data.iterrows():
+        rental_station_id = check_station_id(row['Stacja wynajmu'], session)
+        return_station_id = check_station_id(row['Stacja zwrotu'], session)
+        rentals_data.append({
+            'rental_id': row['UID wynajmu'],
+            'bike_number': row['Numer roweru'],
+            'start_time': row['Data wynajmu'],
+            'end_time': row['Data zwrotu'],
+            'rental_station_id': rental_station_id,
+            'return_station_id': return_station_id
+        })
+    return pd.DataFrame(rentals_data)
+
+
+if __name__ == '__main__':
+    if len(sys.argv) != 3:
+        print('Incorrect amount of arguments, try again')
+
+    else:
+        engine = create_engine(f'sqlite:///{sys.argv[2]}.db')
+        Session = sessionmaker(bind=engine)
+        db_session = Session()
+        Base.metadata.create_all(engine)
+
+        rentals = add_rental(sys.argv[1], db_session)
+        rentals.to_sql('rentals', con=engine, if_exists='append', index=False)
+
+
+
+
+
