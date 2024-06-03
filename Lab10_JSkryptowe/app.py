@@ -1,9 +1,9 @@
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QTableView, QHeaderView
 from PySide6.QtGui import QStandardItemModel, QStandardItem
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, func
 from sqlalchemy.orm import sessionmaker
-from create_database import Station, Base
+from create_database import Station, Base, Rental
 from gui import Ui_MainWindow
 
 
@@ -44,6 +44,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         row = item.row()
         item_id = self.model.item(row, 0)
         print(f'Station clicked: {item_id.text()}')
+        self.calculate_statistics(int(item_id.text()))
+
+    def calculate_statistics(self, station_id):
+
+        avg_start_duration = self.session.query(
+            func.avg(func.julianday(Rental.end_time) - func.julianday(Rental.start_time))
+        ).filter(Rental.rental_station_id == station_id).scalar()
+
+        avg_end_duration = self.session.query(
+            func.avg(func.julianday(Rental.end_time) - func.julianday(Rental.start_time))
+        ).filter(Rental.return_station_id == station_id).scalar()
+
+        unique_bikes = self.session.query(
+            func.count(func.distinct(Rental.bike_number))
+        ).filter(
+            (Rental.rental_station_id == station_id) | (Rental.return_station_id == station_id)
+        ).scalar()
+
+        print(avg_start_duration)
+        print(avg_end_duration)
+        print(unique_bikes)
 
 
 if __name__ == "__main__":
