@@ -6,6 +6,7 @@ from gui import Ui_MainWindow
 import sys
 
 
+
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self):
         super(MainWindow, self).__init__()
