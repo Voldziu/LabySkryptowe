@@ -1,7 +1,8 @@
+import math
 import sys
 from PySide6.QtWidgets import QApplication, QMainWindow, QTableView, QHeaderView
 from PySide6.QtGui import QStandardItemModel, QStandardItem
-from sqlalchemy import create_engine, func
+from sqlalchemy import create_engine, func, extract
 from sqlalchemy.orm import sessionmaker
 from create_database import Station, Base, Rental
 from gui import Ui_MainWindow
@@ -19,6 +20,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.model = QStandardItemModel(self)
         self.tableView.setModel(self.model)
         self.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
+        self.tableView.verticalHeader().setVisible(False)
+
+        self.tableView.setHorizontalScrollMode(QTableView.ScrollPerPixel)
+        self.tableView.setVerticalScrollMode(QTableView.ScrollPerPixel)
 
         self.load_stations()
         self.setup_connections()
@@ -43,18 +48,32 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         row = item.row()
         item_id = self.model.item(row, 0)
+        item_name = self.model.item(row, 1)
+        self.stationName.setText(item_name.text())
         print(f'Station clicked: {item_id.text()}')
         self.calculate_statistics(int(item_id.text()))
 
     def calculate_statistics(self, station_id):
 
         avg_start_duration = self.session.query(
-            func.avg(func.julianday(Rental.end_time) - func.julianday(Rental.start_time))
+            func.avg(func.strftime('%s', Rental.end_time) - func.strftime('%s', Rental.start_time))
         ).filter(Rental.rental_station_id == station_id).scalar()
 
+        avg_start_duration_seconds = 0
+        if avg_start_duration is not None:
+            avg_start_duration /= 60
+            avg_start_duration = math.floor(avg_start_duration)
+            avg_start_duration_seconds = avg_start_duration % 60
+
         avg_end_duration = self.session.query(
-            func.avg(func.julianday(Rental.end_time) - func.julianday(Rental.start_time))
+            func.avg(func.strftime('%s', Rental.end_time) - func.strftime('%s', Rental.start_time))
         ).filter(Rental.return_station_id == station_id).scalar()
+
+        avg_end_duration_seconds = 0
+        if avg_end_duration is not None:
+            avg_end_duration /= 60
+            avg_end_duration = math.floor(avg_end_duration)
+            avg_end_duration_seconds = avg_end_duration % 60
 
         unique_bikes = self.session.query(
             func.count(func.distinct(Rental.bike_number))
@@ -62,9 +81,18 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             (Rental.rental_station_id == station_id) | (Rental.return_station_id == station_id)
         ).scalar()
 
-        print(avg_start_duration)
-        print(avg_end_duration)
-        print(unique_bikes)
+        custom_query_result = self.session.query(
+            func.count(Rental.rental_id)
+        ).filter(
+            Rental.rental_station_id == station_id,
+            extract('hour', Rental.start_time) >= 0,
+            extract('hour', Rental.end_time) < 4
+        ).scalar()
+
+        self.startAvgTime.setText(f'{avg_start_duration} minutes and {avg_start_duration_seconds} seconds')
+        self.finishAvgTime.setText(f'{avg_end_duration} minutes and {avg_end_duration_seconds} seconds')
+        self.uniqueBikesAmount.setText(f'{unique_bikes}')
+        self.amountBetween04.setText(f'{custom_query_result}')
 
 
 if __name__ == "__main__":
