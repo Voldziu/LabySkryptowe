@@ -29,7 +29,6 @@ def get_or_create_station(station_name, station_cache, session):
     return station_cache[station_name]
 
 
-
 def add_rental(data_path, session):
     data = pd.read_csv(data_path)
     rentals_data = []

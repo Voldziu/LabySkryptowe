@@ -5,7 +5,6 @@ from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
 
-
 class Station(Base):
     __tablename__ = 'stations'
     station_id = Column(Integer, primary_key=True)
@@ -14,7 +13,8 @@ class Station(Base):
 
 class Rental(Base):
     __tablename__ = 'rentals'
-    rental_id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True)
+    rental_id = Column(String, nullable=False)
     bike_number = Column(String, nullable=False)
     start_time = Column(DateTime, nullable=False)
     end_time = Column(DateTime, nullable=False)
