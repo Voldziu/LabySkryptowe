@@ -12,7 +12,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
 
-        # Initialize the database connection
         self.engine = create_engine('sqlite:///rental_base.db')
         Session = sessionmaker(bind=self.engine)
         self.session = Session()
@@ -22,17 +21,29 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.tableView.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
         self.load_stations()
+        self.setup_connections()
+
+    def setup_connections(self):
+        self.tableView.clicked.connect(self.handle_station_click)
 
     def load_stations(self):
         self.model.clear()
 
-        self.model.setHorizontalHeaderLabels(["Station Name"])
+        self.model.setHorizontalHeaderLabels(['ID', 'Station Name'])
 
         stations = self.session.query(Station).all()
 
         for station in stations:
+            id = QStandardItem(str(station.station_id))
             name_item = QStandardItem(station.station_name)
-            self.model.appendRow([name_item])
+            self.model.appendRow([id, name_item])
+
+    def handle_station_click(self, index):
+        item = self.model.itemFromIndex(index)
+
+        row = item.row()
+        item_id = self.model.item(row, 0)
+        print(f'Station clicked: {item_id.text()}')
 
 
 if __name__ == "__main__":
